@@ -1,7 +1,5 @@
 # Day-1 RISC-V ISA
 
-Related Course(s): RISC-V Myth (https://www.notion.so/RISC-V-Myth-e52fd09cf2c142c9881dc05a0b7003a2?pvs=21)
-Date Last Edited: September 22, 2023 6:32 PM
 Summary: - RISC-V GCC compiler
 - SPIKE Debugger
 - RISC-V ISA
