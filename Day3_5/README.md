@@ -1,5 +1,7 @@
 # Table of Contents
--[Day-3 Digital Logic with TL-Verilog and Makerchip](#Day-3-Digital-Logic-with-TL-Verilog-and-Makerchip)
+- [Day-3 Digital Logic with TL-Verilog and Makerchip](#Day-3-Digital-Logic-with-TL-Verilog-and-Makerchip)
+- [Day-4 RISC V Microarchitecture](Day-4-RISC-V-Microarchitecture)
+- [Day-5 Complete Pipelined RISC-V CPU micro-architecture](Day-5-Complete-Pipelined-RISC-V-CPU-micro-architecture)
 
 # Day-3 Digital Logic with TL-Verilog and Makerchip
 
