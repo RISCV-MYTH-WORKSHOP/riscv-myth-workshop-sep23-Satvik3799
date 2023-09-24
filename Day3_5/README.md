@@ -1,10 +1,13 @@
+# Table of Contents
+-[Day-3 Digital Logic with TL-Verilog and Makerchip](#Day-3-Digital-Logic-with-TL-Verilog-and-Makerchip)
+
 # Day-3 Digital Logic with TL-Verilog and Makerchip
 
 ## Ex. 1 - Validity Tutorial
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled.png)
 
-# Combinational Logic
+### Combinational Logic
 
 1. Inverter:
 
@@ -23,11 +26,11 @@
     ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%204.png)
     
 
-## Ex. 3 -  Vectors:
+### Ex. 3 -  Vectors:
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%205.png)
 
-## Ex. 4 - Mux:
+### Ex. 4 - Mux:
 
 Single bit:
 
@@ -37,7 +40,7 @@ Vector:
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%207.png)
 
-## Ex. 5 - Math operators with 4to1 MUX:
+### Ex. 5 - Math operators with 4to1 MUX:
 
 Logic used:
 
@@ -55,9 +58,9 @@ $val1[31:0] = $rand1[3:0];
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%208.png)
 
-# Sequential Logic
+## Sequential Logic
 
-## Ex. 6 - Free running counter
+### Ex. 6 - Free running counter
 
 Logic used:
 
@@ -65,17 +68,17 @@ Logic used:
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%209.png)
 
-## Ex. 7 - Fibonacchi Series;
+### Ex. 7 - Fibonacchi Series;
 
 Logic used: `$Fibo[31:0] = $reset ? 1 : (>>1$Fibo + >>2$Fibo );`
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%2010.png)
 
-## PipeLine Solution:
+### PipeLine Solution:
 
 ![Untitled](Day-3%20Digital%20Logic%20with%20TL-Verilog%20and%20Makerchip%2073f82059fc62479497b87e58bdb8ee9a/Untitled%2011.png)
 
-2 cycle calc:
+###2 cycle calc:
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
@@ -139,7 +142,7 @@ link -
 
 [Makerchip](https://makerchip.com/sandbox/0M8f5hkL7/0wjh6B#)
 
-2-cycle calc with valid:
+### 2-cycle calc with valid:
 
 ```nasm
 \m4_TLV_version 1d: tl-x.org
@@ -213,7 +216,7 @@ Link-
 Related Course(s): RISC-V Myth (https://www.notion.so/RISC-V-Myth-e52fd09cf2c142c9881dc05a0b7003a2?pvs=21)
 Date Last Edited: September 24, 2023 10:20 PM
 
-# PC Counter
+## PC Counter
 
 Notice, the PC becomes 0, one clock cycle after reset = 1. We want to execute the instruction 0, if we immediately do the PC=0, when reset=1, it will execute instruction 1, because we add one after the PC gets its value.
 
@@ -221,7 +224,7 @@ Notice, the PC becomes 0, one clock cycle after reset = 1. We want to execute th
 
 ![Untitled](Day-4%20RISC%20V%20Microarchitecture%2040be8d1cdf1f4069ae21b51ef88e2100/Untitled%201.png)
 
-# Fetch
+## Fetch
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
@@ -301,11 +304,11 @@ Notice, the PC becomes 0, one clock cycle after reset = 1. We want to execute th
 
 ![Untitled](Day-4%20RISC%20V%20Microarchitecture%2040be8d1cdf1f4069ae21b51ef88e2100/Untitled%202.png)
 
-# Decode
+## Decode
 
 ![Untitled](Day-4%20RISC%20V%20Microarchitecture%2040be8d1cdf1f4069ae21b51ef88e2100/Untitled%203.png)
 
-Decoding instructions IRSJBU
+### Decoding instructions IRSJBU
 
 ```verilog
 
@@ -404,7 +407,7 @@ Decoding instructions IRSJBU
 
 Notice, the PC = (x0000_0018), in the next clock cycle instruction B gets enabled.
 
-Decoding immediate
+### Decoding immediate
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
@@ -505,7 +508,7 @@ Decoding immediate
 
 ![Untitled](Day-4%20RISC%20V%20Microarchitecture%2040be8d1cdf1f4069ae21b51ef88e2100/Untitled%206.png)
 
-Decode other Fields of Instructions For RV-ISBUJ (Also used a When condition, to only define when the instruction has such a field)
+### Decode other Fields of Instructions For RV-ISBUJ (Also used a When condition, to only define when the instruction has such a field)
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
@@ -624,7 +627,7 @@ Decode other Fields of Instructions For RV-ISBUJ (Also used a When condition, to
 
 ![Untitled](Day-4%20RISC%20V%20Microarchitecture%2040be8d1cdf1f4069ae21b51ef88e2100/Untitled%207.png)
 
-# Register Read:
+## Register Read:
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
@@ -772,7 +775,7 @@ Decode other Fields of Instructions For RV-ISBUJ (Also used a When condition, to
 
 See, on reset=1, after 1 clock cycle, Reg 5 is set to 32’d5, which can be seen here.
 
-Added 
+## Added 
 
 1. ALU Operations for ADD and ADDI instructions
 2. Branch Instructions
@@ -958,7 +961,7 @@ and verify with the value in XREG[10] = x2D or d45
 Related Course(s): RISC-V Myth (https://www.notion.so/RISC-V-Myth-e52fd09cf2c142c9881dc05a0b7003a2?pvs=21)
 Date Last Edited: September 24, 2023 10:02 PM
 
-# Pipelined CPU
+## Pipelined CPU
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
