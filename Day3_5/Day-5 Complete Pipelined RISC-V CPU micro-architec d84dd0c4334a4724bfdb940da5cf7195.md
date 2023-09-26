@@ -5,6 +5,8 @@ Date Last Edited: September 26, 2023 7:46 PM
 
 # Complete RISC-V CPU
 
+The intermediate codes were lost due to a saving error. I updated the "Shell code" as new edits were being made in my note-taking app NOTION.
+
 Simulation passed!
 
 ![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled.png)
