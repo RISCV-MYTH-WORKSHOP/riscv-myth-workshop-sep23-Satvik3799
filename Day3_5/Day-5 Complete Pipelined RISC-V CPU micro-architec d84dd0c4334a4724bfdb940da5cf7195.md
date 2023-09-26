@@ -2,6 +2,8 @@
 
 # Complete RISC-V CPU
 
+[https://www.notion.so](https://www.notion.so)
+
 ```verilog
 \m4_TLV_version 1d: tl-x.org
 \SV
