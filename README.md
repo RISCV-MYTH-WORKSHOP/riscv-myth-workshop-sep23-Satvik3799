@@ -1,7 +1,254 @@
 # Table of Contents
+- [Day-1 RISC-V ISA](#Day-1-RISC-V-ISA)
+- [Day-2 RISC-V ABI and Basic verification flow](#Day-2-RISC-V-ABI-and-Basic-verification-flow)
 - [Day-3 Digital Logic with TL-Verilog and Makerchip](#Day-3-Digital-Logic-with-TL-Verilog-and-Makerchip)
 - [Day-4 RISC V Microarchitecture](#Day-4-RISC-V-Microarchitecture)
 - [Day-5 Complete Pipelined RISC-V CPU micro-architecture](#Day-5-Complete-Pipelined-RISC-V-CPU-micro-architecture)
+
+# Day-1 RISC-V ISA
+
+Summary: - RISC-V GCC compiler
+- SPIKE Debugger
+- RISC-V ISA
+
+## Using the RISC-V GCC compiler to compile a code written in C language.
+
+Commands used:
+
+1. write a C program in leafpad, to sum 1 to n numbers.
+    
+    ```c
+    //File name is sum1ton.c
+    #include <stdio.h>
+    
+    int main() {
+    
+      int i, sum = 0, n = 15;
+      for (i=1; i<=n; ++i ){
+      sum += 1;
+      }
+      printf("Sum of numbers from 1 to %d is %d",n,sum);
+      return 0;
+    }
+    ```
+    
+2. Compiled using GCC.
+3. Compiling using RISC-V GCC compiler with the command:
+    
+    It is used to compile C source code into an executable binary for the RISC-V architecture.
+    
+    General command - `riscv64-unknown-elf-gcc <compiler option -O1 ; Ofast> <ABI specifier -lp64; -lp32; -ilp32> <architecture specifier-RV64; RV32> -o <object-filename> <C-filename>`
+    
+    - The **`riscv64-unknown-elf`** prefix is typically used for cross-compilation, where you compile code on one architecture (e.g., x86) to run on another (e.g., RISC-V).
+    - `march=ISA` selects the architecture to target. This controls which instructions and registers are available for the compiler to use. here we used, `march=rv64i` which means the general-purpose integer registers are 64-bits wide.
+    - `mabi=ABI` selects the ABI to target. This controls the calling convention (which arguments are passed in which registers) and the layout of data in memory. Here we used, `mabi=lp64` which means `long` and pointers are 64-bits long, while `int` is a 32-bit type. The other types remain the same as ilp32.
+    
+    <aside>
+    💡 The "long" data type is used to represent integers with a larger range of values compared to the standard "int" data type.
+    
+    </aside>
+    
+    - `mtune=CODENAME` selects the microarchitecture to target. This informs GCC about the performance of each instruction, allowing it to perform target-specific optimizations.
+    - `-o sum1ton.o`This specifies the output file name for the compiled object file.
+    
+    Command used here -  `riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c`
+    
+    This will generate a set of instructions or assembly language code needed for the code to be run on a RISC-V machine.
+    
+    - To view assembly code use the below command, where `-d` stands for **********************disassemble********************** `riscv64-unknown-elf-objdump -d <object filename>`
+    
+    We are looking for address of the `<main>` block of the code we have written. It is stored at **x'10184,** and it uses (x’101b0-x’10184)/4 = x’B or $(11)_d$ addresses to save the needed instructions. Why it leaps 4 bits?
+    
+    ![Untitled](Day-1%20RISC-V%20ISA%201e5440d16f0b4c3289a57fff4d8b8e16/Untitled.png)
+    
+    When used `-Ofast`By using the command: `riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c` 
+    
+    - Hte **`-Ofast`** option in GCC is a high-level optimization level that includes aggressive optimization settings for code performance. When you use the **`-Ofast`** option with the RISC-V GCC compiler, it instructs the compiler to apply a wide range of optimizations that can potentially lead to faster code execution but may also make certain trade-offs that could impact code behavior.
+    
+    ![Untitled](Day-1%20RISC-V%20ISA%201e5440d16f0b4c3289a57fff4d8b8e16/Untitled%201.png)
+    
+    More on options that can be used to run the compiler can be found here:
+    
+    [https://www.sifive.com/blog/all-aboard-part-1-compiler-args](https://www.sifive.com/blog/all-aboard-part-1-compiler-args)
+    
+
+## Debugging using SPIKE:
+
+SPIKE is a RISC-V ISA (Instruction Set Architecture) simulator developed by the RISC-V project. It serves as a reference simulator for RISC-V, designed to aid in the development and testing of RISC-V software and hardware.
+
+To use SPIKE simualtor to run risc-v obj file use the command: `spike pk <object filename>`
+
+To use SPIKE as debugger `spike -d pk <object Filename>` with some debug commands as
+
+ `until pc 0 <pc of your choice>` - To go to a particular address, till the instructions have been executed.
+
+`reg 0 a0` will show the contents of the register at the moment. When pressing “Enter”, the next instruction in the PC would execute and the corresponding registers will get updated.
+
+The PC was at x’100b0, and after executing the instruction present at x’100b0, which is `lui a0, 0x21` , it updated the register accordingly.
+
+<aside>
+💡 LUI - Load Upper Immediate. It will load with the hex value given to the destination register. But only bits 32:12 are updated and puts zero to the rest of the LSBs up to 12.
+
+</aside>
+
+![Untitled](Day-1%20RISC-V%20ISA%201e5440d16f0b4c3289a57fff4d8b8e16/Untitled%202.png)
+
+## 64-bit Number Representation:
+
+C language code;
+
+```c
+#include <stdio.h>
+#include <math.h>
+
+int main () {
+
+// Any value above or below the limit would result in the highest or lowest number it can represent, so 2^127 is chosen randomly.
+
+//For int
+
+int max_i = (int) (pow(2,127)-1);
+printf("highest number represented by int is %d\n", max_i);
+
+int min_i = (int) (pow(2,127)*-1);
+printf("Lowest number represented by int is %d \n", min_i);
+
+// For Unsigned integer
+
+unsigned int max_ui = (unsigned int) (pow(2,127)-1);
+printf("highest number represented by unsigned is %u\n", max_ui);
+
+unsigned int min_ui = (unsigned int) (pow(2,127)*-1);
+printf("Lowest number represented by unsigned int is %u \n", min_ui);
+
+//For long long int
+
+long long int max_lld = ( long long int) (pow(2,127)-1);
+printf("highest number represented by int is %lld\n", max_lld);
+
+long long int min_lld = (long long int) (pow(2,127)*-1);
+printf("Lowest number represented by int is %lld \n", min_lld);
+
+// For Unsigned integer
+
+unsigned int max_llu = (unsigned long long int) (pow(2,127)-1);
+printf("highest number represented by unsigned long long int is %llu\n", max_llu);
+
+unsigned int min_llu = (unsigned long long int) (pow(2,127)*-1);
+printf("Lowest number represented by unsigned long long int is %u \n", min_llu);
+
+}
+```
+
+![Untitled](Day-1%20RISC-V%20ISA%201e5440d16f0b4c3289a57fff4d8b8e16/Untitled%203.png)
+
+![Untitled](Day-1%20RISC-V%20ISA%201e5440d16f0b4c3289a57fff4d8b8e16/Untitled%204.png)
+
+
+# Day-2 RISC-V ABI and Basic verification flow
+
+Related Course(s): RISC-V Myth (https://www.notion.so/RISC-V-Myth-e52fd09cf2c142c9881dc05a0b7003a2?pvs=21)
+Date Last Edited: September 23, 2023 11:56 AM
+Summary: - Little Endian and Big Endian memory addressing system
+
+## Level of Abstractions and various interfaces:
+
+An application is created in an higher level programming language, which makes use of standard libraries offered by an Operating System, and functions accordingly. The Application Programming Interface (API) is the interface between the standard libraries and the application.
+
+The OS then uses the ISA to convert the high-level code to instructions that can be understood by the architecture on which the OS is hosted.
+
+The ISA of the processor architecture is implemented on an RTL design. The RTL will synthesize a logic circuit that would respond to an instruction and give outputs accordingly.
+
+An application may directly access the registers of a processor, bypassing Operating System, with a System Call or Application Binary Interface (ABI).
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled.png)
+
+<aside>
+💡 Little Endian and Big Endian Memory Addressing System:
+
+[Lecture 22. Big Endian and Little Endian](https://www.youtube.com/watch?v=T1C9Kj_78ek)
+
+- **Little-Endian**: In little-endian systems, the least significant byte (LSB) of a multi-byte data item is stored at the lowest memory address, and the most significant byte (MSB) is stored at the highest memory address.
+- **Big-Endian**: In big-endian systems, it's the opposite. The MSB is stored at the lowest memory address, and the LSB is stored at the highest memory address.
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%201.png)
+
+</aside>
+
+## ABI of a RISC-V architecture:
+
+The interface has 32 registers of specific width. The width of the register is defined by `XLEN`, for RV64 XLEN=64 and for RV32 XLEN=32. Each register is used for different type of functionality or system call. 
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%202.png)
+
+<aside>
+💡 These registers are used for ABI purpose only. Since they are limited, 32 registers and each with different uses, they get filled very quickly and so we need to store them back in the memory right after the instruction executes. So we continuously load and store the registers.
+
+</aside>
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%203.png)
+
+In RISC V architecture, the instructions are 32-bits, even if we use the RV64 architecture.
+
+1. Load Doubleword Instruction:
+    
+    `ld x8, 16(x23)` - This instruction will load the x8 register with the contents present at address given on x23+16. 16 is the offset given to the contents on x23. This offset is saved in “Immediate” bits.
+    
+    The structure of the instruction is shown. The opcode and funct3 bits will identify the keyword `ld` . Rd and Rs1 are destination and source registers respectively, which are of 5-bits.
+    
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%204.png)
+
+1. Add Instruction:
+    
+    `add x8, x24, x8` 
+    
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%205.png)
+
+1. Store Doubleword Instruction:
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%206.png)
+
+## Algorithm using ASM language:
+
+C language code:
+
+```c
+#include <stdio.h>
+extern int load(int x, int y);
+   int main() {
+         int result = 0;
+         int count = 9;
+         result = load (0x0, count+1);
+         printf("Sum of number from 1 to %d is %d\n", count, result);
+}
+```
+
+ASM Code:
+
+```nasm
+.section .text
+.global load
+.type load, @function
+load:   add a4, a0, zero //Initialize sum register a4 with 0x0
+            add a2, a0, al   // store count of 10 in register a2. Register al is loaded with Oxa (decimal 10) from main
+            add a3, a0, zero // initialize intermediate sum register a3 by 0
+loop:    add   a4, a3, a4   // Incremental addition
+            addi a3, а3, 1   // Increment intermediate register by 1
+            blt   a3, a2, loop // If a3 is less than a2, branch to label named <loop>
+            add   a0, a4, zero // Store final result to register a0 so that it can be read by main program
+            ret
+```
+
+Parse the ASM code and the C language code together with command: `riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o 1to9_custom.o 1to9_custom.c load.s` 
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%207.png)
+
+Running a pre-wrriten code 1to9_custom.c on Picorv32, using iverilog. Every command to make this possible is written in the [rv32im.sh](http://rv32im.sh) file.
+
+![Untitled](Day-2%20RISC-V%20ABI%20and%20Basic%20verification%20flow%20389bf2d54bf249418a8b863b1ec0f6db/Untitled%208.png)
+
 
 # Day-3 Digital Logic with TL-Verilog and Makerchip
 
