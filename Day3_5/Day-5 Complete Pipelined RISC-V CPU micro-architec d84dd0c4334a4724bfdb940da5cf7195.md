@@ -1,8 +1,15 @@
 # Day-5 Complete Pipelined RISC-V CPU micro-architecture
 
+Related Course(s): RISC-V Myth (https://www.notion.so/RISC-V-Myth-e52fd09cf2c142c9881dc05a0b7003a2?pvs=21)
+Date Last Edited: September 26, 2023 7:46 PM
+
 # Complete RISC-V CPU
 
-[https://www.notion.so](https://www.notion.so)
+Simulation passed!
+
+![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled.png)
+
+## Code:
 
 ```verilog
 \m4_TLV_version 1d: tl-x.org
@@ -264,16 +271,16 @@ Link to the project:
 
 On 56th cycle, the reg 10 has the value x2D or d45, which gets stored in to reg 15 after 4-clock cycles.
 
-![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled.png)
-
 ![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled%201.png)
-
-## Diagram
 
 ![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled%202.png)
 
-## Waveforms
+## Diagram
 
 ![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled%203.png)
 
+## Waveforms
+
 ![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled%204.png)
+
+![Untitled](Day-5%20Complete%20Pipelined%20RISC-V%20CPU%20micro-architec%20d84dd0c4334a4724bfdb940da5cf7195/Untitled%205.png)
