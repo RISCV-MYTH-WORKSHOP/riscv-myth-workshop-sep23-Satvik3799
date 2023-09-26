@@ -1,8 +1,5 @@
 # Day-5 Complete Pipelined RISC-V CPU micro-architecture
 
-Related Course(s): RISC-V Myth (https://www.notion.so/RISC-V-Myth-e52fd09cf2c142c9881dc05a0b7003a2?pvs=21)
-Date Last Edited: September 26, 2023 7:27 PM
-
 # Complete RISC-V CPU
 
 ```verilog
